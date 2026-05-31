@@ -39,4 +39,4 @@ codespell: ## Codespell all
 
 .PHONY: test
 test: ## Run all dev checks and tests
-	make lint && make mypy && make pytest && make sql-lint
+	make lint && make mypy && make pytest && make sql-lint && make codespell
