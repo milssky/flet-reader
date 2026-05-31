@@ -29,6 +29,14 @@ format: ## Format by Ruff
 lint: ## Execute ruff check and format
 	uv run ruff check --exit-non-zero-on-fix && uv run ruff format --check --diff && uv run flake8 .
 
+.PHONY: sql-lint
+sql-lint: ## Lint sql files
+	uv run sqlfluff lint flet_reader
+
+.PHONY: codespell
+codespell: ## Codespell all
+	uv run codespell .
+
 .PHONY: test
 test: ## Run all dev checks and tests
-	make lint && make mypy && make pytest
+	make lint && make mypy && make pytest && make sql-lint
