@@ -26,6 +26,7 @@ dev = [
     "covdefaults>=2.3,<3.0",
     "ruff>=0.15,<1.0",
     "wemake-python-styleguide>=1.6,<2.0",
+    "sqlfluff>=4.2,<5.0",
 ]
 
 [tool.flet]
@@ -214,3 +215,13 @@ warn_unreachable = true
 module = "server.apps.*.migrations.*"
 # Django migrations should not produce any errors (they are tested anyway):
 ignore_errors = true
+
+
+[tool.sqlfluff.core]
+# Docs: https://docs.sqlfluff.com
+dialect = "sqlite"
+templater = "placeholder"
+warn_unused_ignores = true
+
+[tool.sqlfluff.templater.placeholder]
+param_style = "pyformat"
