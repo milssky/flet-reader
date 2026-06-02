@@ -4,11 +4,13 @@ import contextlib
 from typing import Any, Protocol
 
 import pytest
-from punq import Container, Scope, _Empty, empty  # noqa: WPS450
+from diwire import Container
 
 from flet_reader import implemented
 from flet_reader.common.di import Resolve
 from flet_reader.infra import db
+
+_DEFAULT_FACTORY = object()
 
 
 class ImplementedOverride(Protocol):
@@ -21,12 +23,13 @@ class ImplementedOverride(Protocol):
     def __call__(
         self,
         dependency: type[Any],
-        factory: type[Any] | _Empty = empty,
+        factory: type[Any] | object = _DEFAULT_FACTORY,
         *,
-        scope: Scope = ...,
+        scope: Any = ...,
+        lifetime: Any = ...,
         **kwargs: Any,
     ) -> contextlib.AbstractContextManager[Resolve]:
-        """Dependency override factory protocol for `punq`."""
+        """Dependency override factory protocol."""
 
 
 @pytest.fixture
@@ -45,4 +48,7 @@ def implemented_resolve(
     implemented_container: Container,
 ) -> Resolve:
     """Provide sync DI resolver configured for tests."""
-    return implemented_container.resolve  # type: ignore[no-any-return]
+    def _resolve[Thing](thing: type[Thing]) -> Thing:
+        return implemented_container.resolve(thing)
+
+    return _resolve
