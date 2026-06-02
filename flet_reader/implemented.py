@@ -16,6 +16,8 @@ def create_container(
     db_config: db.DBConfig | None = None,
 ) -> Container:
     """Creates DI container, which can be re-created in tests."""
+    from lxml import etree
+
     from flet_reader.infra import db
 
     container = Container(default_lifetime=Lifetime.TRANSIENT)
@@ -23,6 +25,17 @@ def create_container(
     container.add_instance(
         db_config or db.DBConfig(path=DEFAULT_DB_PATH),
         provides=db.DBConfig,
+    )
+    container.add_instance(
+        etree.XMLParser(
+            resolve_entities=False,
+            no_network=True,
+            load_dtd=False,
+            dtd_validation=False,
+            huge_tree=False,
+            recover=False,
+            remove_blank_text=False,
+        ),
     )
     container.add(db.DBConnection)
     container.add(db.SqlScriptRunner)

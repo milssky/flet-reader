@@ -48,7 +48,8 @@ def implemented_resolve(
     implemented_container: Container,
 ) -> Resolve:
     """Provide sync DI resolver configured for tests."""
-    def _resolve[Thing](thing: type[Thing]) -> Thing:
+
+    def _resolve[Thing](thing: type[Thing]) -> Thing:  # noqa: WPS430
         return implemented_container.resolve(thing)
 
     return _resolve

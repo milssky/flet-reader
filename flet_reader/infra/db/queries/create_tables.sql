@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS blocks (
     chapter_id INTEGER NOT NULL,
     order_index INTEGER NOT NULL,
     type TEXT NOT NULL,
-    data TEXT,
+    content TEXT,
     payload BLOB,
 
     FOREIGN KEY (book_id) REFERENCES books (id) ON DELETE CASCADE,
