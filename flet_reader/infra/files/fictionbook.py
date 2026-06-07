@@ -7,7 +7,8 @@ from typing import Final, final
 import attrs
 from lxml import etree
 
-from flet_reader.infra.dtos import Book, Chapter
+from flet_reader.common.enums import BlockTypes
+from flet_reader.infra.dtos import Block, Book, Chapter
 
 FB2_NS: Final = 'http://www.gribuser.ru/xml/fictionbook/2.0'
 XLINK_NS: Final = 'http://www.w3.org/1999/xlink'
@@ -16,6 +17,12 @@ NS = MappingProxyType({
     'fb': FB2_NS,
     'xlink': XLINK_NS,
 })
+
+
+def _get_element_text(element: etree.Element | None) -> str:
+    if element is None:
+        return ''
+    return ' '.join(''.join(element.itertext()).split())
 
 
 @final
@@ -48,13 +55,66 @@ class FBFileReader:
 
     def _get_chapters(self, root: etree.Element) -> list[Chapter]:
         body = root.find('fb:body', namespaces=NS)
-        chapters = []
         if body is None:
             return []
-        for section in body.iter():
-            chapters.append(section)  # noqa: PERF402
-            # TODO: extract blocks from sections
+
+        chapters = []
+        for section in body.findall('fb:section', namespaces=NS):
+            chapters.extend(self._get_section_chapters(section, level=1))
         return chapters
+
+    def _get_section_chapters(
+        self,
+        section: etree.Element,
+        level: int,
+    ) -> list[Chapter]:
+        chapters = [
+            Chapter(
+                blocks=self._get_blocks(section),
+                title=_get_element_text(
+                    section.find('fb:title', namespaces=NS),
+                ),
+                level=level,
+            ),
+        ]
+        for nested_section in section.findall('fb:section', namespaces=NS):
+            chapters.extend(
+                self._get_section_chapters(
+                    nested_section,
+                    level=level + 1,
+                ),
+            )
+        return chapters
+
+    def _get_blocks(self, section: etree.Element) -> list[Block]:
+        blocks = []
+        for element in section:
+            element_type = etree.QName(element).localname
+            if element_type in {'title', 'subtitle'}:
+                blocks.append(
+                    Block(
+                        type=BlockTypes.header,
+                        content=_get_element_text(element),
+                    ),
+                )
+            elif element_type == 'p':
+                blocks.append(
+                    Block(
+                        type=BlockTypes.text,
+                        content=_get_element_text(element),
+                    ),
+                )
+            elif element_type == 'image':
+                blocks.append(
+                    Block(
+                        type=BlockTypes.image,
+                        content=element.get(
+                            f'{{{XLINK_NS}}}href',
+                            '',
+                        ),
+                    ),
+                )
+        return blocks
 
     def _get_author(self, root: etree.Element) -> list[str]:
         authors = []
