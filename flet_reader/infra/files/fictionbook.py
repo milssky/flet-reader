@@ -33,7 +33,7 @@ class FBFileReader:
     _parser: etree.XMLParser
 
     def __call__(self, file_path: Path) -> Book:
-        """Conver file to DTO."""
+        """Convert file to DTO."""
         root = etree.fromstring(self._open_book(file_path), parser=self._parser)
         return Book(
             title=self._get_title(root),
