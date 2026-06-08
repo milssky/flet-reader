@@ -19,15 +19,9 @@ NS = MappingProxyType({
 })
 
 
-def _get_element_text(element: etree.Element | None) -> str:
-    if element is None:
-        return ''
-    return ' '.join(''.join(element.itertext()).split())
-
-
 @final
 @attrs.define(frozen=True)
-class FBFileReader:
+class FBFileReader:  # noqa: WPS214
     """FB2 book file reader."""
 
     _parser: etree.XMLParser
@@ -71,7 +65,7 @@ class FBFileReader:
         chapters = [
             Chapter(
                 blocks=self._get_blocks(section),
-                title=_get_element_text(
+                title=self._get_element_text(
                     section.find('fb:title', namespaces=NS),
                 ),
                 level=level,
@@ -94,14 +88,14 @@ class FBFileReader:
                 blocks.append(
                     Block(
                         type=BlockTypes.header,
-                        content=_get_element_text(element),
+                        content=self._get_element_text(element),
                     ),
                 )
             elif element_type == 'p':
                 blocks.append(
                     Block(
                         type=BlockTypes.text,
-                        content=_get_element_text(element),
+                        content=self._get_element_text(element),
                     ),
                 )
             elif element_type == 'image':
@@ -135,3 +129,8 @@ class FBFileReader:
             )
             authors.append(name)
         return authors
+
+    def _get_element_text(self, element: etree.Element | None) -> str:
+        if element is None:
+            return ''
+        return ' '.join(''.join(element.itertext()).split())
