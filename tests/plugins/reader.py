@@ -7,7 +7,7 @@ from flet_reader.common.di import Resolve
 from flet_reader.infra.dtos import Book
 from flet_reader.infra.files.fictionbook import FBFileReader
 
-_FILES_DIR: Final = Path(__file__).parent.parent / 'test_infra' / 'files'
+FILES_DIR: Final = Path(__file__).parent.parent / 'fixtures' / 'files'
 
 
 @pytest.fixture
@@ -19,4 +19,4 @@ def reader(implemented_resolve: Resolve) -> FBFileReader:
 @pytest.fixture
 def parsed_book(reader: FBFileReader) -> Book:
     """Read the sample FB2 book."""
-    return reader(_FILES_DIR / 'sample.fb2')
+    return reader(FILES_DIR / 'sample.fb2')

@@ -1,7 +1,5 @@
 # NOTE: simple layers go on top!
 
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 from diwire import Container, Lifetime
@@ -39,7 +37,9 @@ def create_container(
         ),
     )
     container.add(db.DBConnection)
+    container.add(db.SqlQueryLoader)
     container.add(db.SqlScriptRunner)
+    container.add(db.BookSaver)
 
     container.add(usacases.ConvertBookToSql)
 

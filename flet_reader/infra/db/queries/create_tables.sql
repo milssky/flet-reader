@@ -7,6 +7,15 @@ CREATE TABLE IF NOT EXISTS books (
     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS book_authors (
+    book_id INTEGER NOT NULL,
+    order_index INTEGER NOT NULL,
+    name TEXT NOT NULL,
+
+    PRIMARY KEY (book_id, order_index),
+    FOREIGN KEY (book_id) REFERENCES books (id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS chapters (
     id INTEGER PRIMARY KEY,
     book_id INTEGER NOT NULL,

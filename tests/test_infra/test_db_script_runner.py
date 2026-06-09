@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import sqlite3
 from pathlib import Path
 from typing import Final
@@ -37,4 +35,4 @@ def test_create_tables_script(
         ).fetchall()
     }
 
-    assert table_names == {'books', 'chapters', 'blocks'}
+    assert table_names == {'books', 'book_authors', 'chapters', 'blocks'}
