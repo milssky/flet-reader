@@ -4,6 +4,7 @@ from typing import final
 import attrs
 
 from flet_reader.infra.db.connection import DBConnection
+from flet_reader.infra.db.query_loader import SqlQuery
 from flet_reader.infra.db.query_loader import SqlQueryLoader
 from flet_reader.infra.dtos import Block, Book, Chapter
 
@@ -30,7 +31,7 @@ class BookSaver:
         book: Book,
     ) -> int:
         cursor = connection.execute(
-            self._query('insert_book.sql'),
+            self._query(SqlQuery.INSERT_BOOK),
             {'title': book.title},
         )
         book_id = cursor.lastrowid
@@ -45,7 +46,7 @@ class BookSaver:
         authors: list[str],
     ) -> None:
         connection.executemany(
-            self._query('insert_book_author.sql'),
+            self._query(SqlQuery.INSERT_BOOK_AUTHOR),
             (
                 {
                     'book_id': book_id,
@@ -91,7 +92,7 @@ class BookSaver:
         chapter: Chapter,
     ) -> int:
         cursor = connection.execute(
-            self._query('insert_chapter.sql'),
+            self._query(SqlQuery.INSERT_CHAPTER),
             {
                 'book_id': book_id,
                 'parent_id': parent_id,
@@ -113,7 +114,7 @@ class BookSaver:
         blocks: list[Block],
     ) -> None:
         connection.executemany(
-            self._query('insert_block.sql'),
+            self._query(SqlQuery.INSERT_BLOCK),
             (
                 {
                     'book_id': book_id,
