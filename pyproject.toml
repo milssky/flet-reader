@@ -117,6 +117,7 @@ ignore = [
   "PLR2004", # do not report magic numbers
   "PLR6301", # do not require classmethod / staticmethod when self not used
   "RUF067",  # wps handles `__init__.py` logic better
+  "RUF076",  # we use `autouse` in fixtures
   "TRY003",  # long exception messages from `tryceratops`
 ]
 external = ["WPS"]

@@ -4,8 +4,7 @@ from typing import final
 import attrs
 
 from flet_reader.infra.db.connection import DBConnection
-from flet_reader.infra.db.query_loader import SqlQuery
-from flet_reader.infra.db.query_loader import SqlQueryLoader
+from flet_reader.infra.db.query_loader import SqlQuery, SqlQueryLoader
 from flet_reader.infra.dtos import Block, Book, Chapter
 
 
