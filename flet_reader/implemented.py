@@ -17,7 +17,7 @@ def create_container(
     from lxml import etree
 
     from flet_reader.infra import db
-    from flet_reader.logic import usacases
+    from flet_reader.logic import usecases
 
     container = Container(default_lifetime=Lifetime.TRANSIENT)
 
@@ -41,7 +41,7 @@ def create_container(
     container.add(db.SqlScriptRunner)
     container.add(db.BookSaver)
 
-    container.add(usacases.ConvertBookToSql)
+    container.add(usecases.ConvertBookToSql)
 
     return container
 
