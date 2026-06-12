@@ -3,7 +3,7 @@ from typing import Final
 
 from flet_reader.common.di import Resolve
 from flet_reader.infra import db
-from flet_reader.logic.usacases import ConvertBookToSql
+from flet_reader.logic.usecases import ConvertBookToSql
 from tests.plugins.reader import FILES_DIR
 
 _CREATE_TABLES: Final = (
