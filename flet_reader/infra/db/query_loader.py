@@ -12,6 +12,7 @@ class SqlQuery(StrEnum):
     INSERT_BOOK_AUTHOR = 'insert_book_author.sql'
     INSERT_CHAPTER = 'insert_chapter.sql'
     INSERT_BLOCK = 'insert_block.sql'
+    LOAD_BOOKS_INFO = 'read_book.sql'
 
 
 @final
