@@ -29,3 +29,11 @@ class Book(Struct):
     chapters: list[Chapter]
     title: str
     authors: list[str]  # TODO: Convert to Struct
+
+
+@final
+class ShortBookInfo(Struct):
+    """Represent title and book name."""
+
+    title: str
+    author: str  # TODO: All authors joined in one str. Remove it

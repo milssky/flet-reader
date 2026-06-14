@@ -1,11 +1,23 @@
 import sqlite3
 from collections.abc import Iterator
 from contextlib import closing
+from pathlib import Path
+from typing import Final
 from uuid import uuid4
 
 import pytest
 
+from flet_reader.common.di import Resolve
 from flet_reader.infra import db
+
+_CREATE_TABLES: Final = (
+    Path(__file__).parent.parent.parent
+    / 'flet_reader'
+    / 'infra'
+    / 'db'
+    / 'queries'
+    / 'create_tables.sql'
+)
 
 
 @pytest.fixture
@@ -29,3 +41,12 @@ def db_connection(
         connection.execute('PRAGMA foreign_keys = ON')
 
         yield connection
+
+
+@pytest.fixture(autouse=True)
+def migrate_database(
+    db_connection: sqlite3.Connection,
+    implemented_resolve: Resolve,
+) -> None:
+    """Apply database migrations before each test."""
+    implemented_resolve(db.SqlScriptRunner)(_CREATE_TABLES)

@@ -1,6 +1,4 @@
 import sqlite3
-from pathlib import Path
-from typing import Final
 
 import pytest
 
@@ -9,28 +7,13 @@ from flet_reader.common.enums import BlockTypes
 from flet_reader.infra import db
 from flet_reader.infra.dtos import Block, Book, Chapter
 
-_CREATE_TABLES: Final = (
-    Path(__file__).parent.parent.parent
-    / 'flet_reader'
-    / 'infra'
-    / 'db'
-    / 'queries'
-    / 'create_tables.sql'
-)
-
-
-@pytest.fixture
-def book_saver(implemented_resolve: Resolve) -> db.BookSaver:
-    """Create the schema and return the book saver."""
-    implemented_resolve(db.SqlScriptRunner)(_CREATE_TABLES)
-    return implemented_resolve(db.BookSaver)
-
 
 def test_saves_complete_book(
-    book_saver: db.BookSaver,
+    implemented_resolve: Resolve,
     db_connection: sqlite3.Connection,
 ) -> None:
     """Saves metadata, chapter hierarchy, and block payloads."""
+    book_saver = implemented_resolve(db.BookSaver)
     book = Book(
         title='Test book',
         authors=['First Author', 'Second Author'],
@@ -117,10 +100,11 @@ def _assert_blocks(db_connection: sqlite3.Connection) -> None:
 
 
 def test_rolls_back_invalid_chapter_level(
-    book_saver: db.BookSaver,
+    implemented_resolve: Resolve,
     db_connection: sqlite3.Connection,
 ) -> None:
     """Does not leave a partial book after invalid hierarchy."""
+    book_saver = implemented_resolve(db.BookSaver)
     book = Book(
         title='Invalid book',
         authors=[],
