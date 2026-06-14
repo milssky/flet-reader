@@ -35,5 +35,6 @@ class Book(Struct):
 class ShortBookInfo(Struct):
     """Represent title and book name."""
 
+    id: int
     title: str
     author: str  # TODO: All authors joined in one str. Remove it

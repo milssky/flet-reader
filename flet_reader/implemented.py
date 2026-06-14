@@ -40,10 +40,9 @@ def create_container(
     container.add(db.SqlQueryLoader)
     container.add(db.SqlScriptRunner)
     container.add(db.BookSaver)
-    container.add(db.LoadBooksInfo)
+    container.add(db.BooksInfoLoader)
 
     container.add(usecases.ConvertBookToSql)
-
     return container
 
 

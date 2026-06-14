@@ -199,6 +199,11 @@ plugins = [
   "covdefaults",
 ]
 
+omit = [
+  # Now we dont test components
+  "flet_reader/components/*.py",
+]
+
 [tool.mypy]
 # Mypy configuration:
 # https://mypy.readthedocs.io/en/latest/config_file.html

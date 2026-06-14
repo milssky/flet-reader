@@ -50,8 +50,23 @@ class FBFileReader:  # noqa: WPS214
         if body is None:
             return []
 
+        sections = body.findall('fb:section', namespaces=NS)
+        if not sections:
+            blocks = self._get_blocks(body)
+            if not blocks:
+                return []
+            return [
+                Chapter(
+                    blocks=blocks,
+                    title=self._get_element_text(
+                        body.find('fb:title', namespaces=NS),
+                    ),
+                    level=1,
+                ),
+            ]
+
         chapters = []
-        for section in body.findall('fb:section', namespaces=NS):
+        for section in sections:
             chapters.extend(self._get_section_chapters(section, level=1))
         return chapters
 
@@ -78,7 +93,7 @@ class FBFileReader:  # noqa: WPS214
             )
         return chapters
 
-    def _get_blocks(self, section: etree.Element) -> list[Block]:
+    def _get_blocks(self, section: etree.Element) -> list[Block]:  # noqa: WPS231
         blocks = []
         for element in section:
             element_type = etree.QName(element).localname
@@ -106,6 +121,8 @@ class FBFileReader:  # noqa: WPS214
                         ),
                     ),
                 )
+            elif element_type != 'section':
+                blocks.extend(self._get_blocks(element))
         return blocks
 
     def _get_author(self, root: etree.Element) -> list[str]:

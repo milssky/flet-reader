@@ -1,4 +1,5 @@
 SELECT
+    books.id,
     books.title,
     book_authors.name
 FROM books

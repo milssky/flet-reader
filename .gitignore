@@ -165,3 +165,6 @@ storage/
 
 # sqlite3 DB
 *.sqlite3*
+
+# Test book
+book.fb2
