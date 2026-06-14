@@ -1,4 +1,4 @@
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from typing import final
 
 import flet as ft
@@ -10,9 +10,14 @@ from flet_reader.infra.dtos import ShortBookInfo
 class BookCatalog(ft.Container):
     """Scrollable adaptive grid of book cards."""
 
-    def __init__(self, books: Sequence[ShortBookInfo]) -> None:
+    def __init__(
+        self,
+        books: Sequence[ShortBookInfo],
+        on_book_selected: Callable[[int], None],
+    ) -> None:
         """Create catalog from short book descriptions."""
         super().__init__(expand=True)
+        self._on_book_selected = on_book_selected
         self.content = ft.GridView(  # noqa: WPS110
             controls=[self._build_card(book) for book in books],
             max_extent=220,
@@ -30,6 +35,8 @@ class BookCatalog(ft.Container):
             content=ft.Container(
                 bgcolor=ft.Colors.SURFACE_CONTAINER,
                 padding=16,
+                ink=True,
+                on_click=lambda: self._on_book_selected(book.id),
                 content=ft.Column(  # noqa: WPS110
                     controls=[
                         ft.Container(
