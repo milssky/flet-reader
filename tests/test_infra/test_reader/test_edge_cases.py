@@ -70,7 +70,7 @@ def test_fb2reader_blocks_inside_container(
     ]
 
 
-def test_fb2reader_body_paragraphs_without_sections(
+def test_fb2reader_body_paragraphs_wo_sections(
     reader: FBFileReader,
     tmp_path: Path,
 ) -> None:

@@ -93,7 +93,7 @@ class FBFileReader:  # noqa: WPS214
             )
         return chapters
 
-    def _get_blocks(self, section: etree.Element) -> list[Block]:
+    def _get_blocks(self, section: etree.Element) -> list[Block]:  # noqa: WPS231
         blocks = []
         for element in section:
             element_type = etree.QName(element).localname
