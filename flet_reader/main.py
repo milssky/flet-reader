@@ -10,7 +10,7 @@ class ReaderApp(ft.Container, HasContainer):
     """Main app class."""
 
 
-def main(page: ft.Page) -> None:  # pragma: no cover
+def main(page: ft.Page) -> None:
     """Entrypoint."""
     page.title = 'Flet Reader'
     reader = ReaderApp()
