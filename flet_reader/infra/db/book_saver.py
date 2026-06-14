@@ -63,6 +63,8 @@ class BookSaver:
         chapters: list[Chapter],
     ) -> None:
         parent_ids: list[int] = []
+        # TODO: in some cases fb2 file doesn't contain some chapters
+        # need fallback to parse <p> blocks.
         for order_index, chapter in enumerate(chapters):
             self._validate_level(chapter.level, parent_ids)
             parent_ids = parent_ids[: chapter.level - 1]
