@@ -1,4 +1,6 @@
-from flet_reader.infra.db.book_info_loader import LoadBooksInfo as LoadBooksInfo
+from flet_reader.infra.db.book_info_loader import (
+    BooksInfoLoader as BooksInfoLoader,
+)
 from flet_reader.infra.db.book_saver import BookSaver as BookSaver
 from flet_reader.infra.db.connection import DBConfig as DBConfig
 from flet_reader.infra.db.connection import DBConnection as DBConnection

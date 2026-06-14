@@ -9,7 +9,7 @@ from flet_reader.infra.dtos import ShortBookInfo
 
 @final
 @attrs.define(frozen=True)
-class LoadBooksInfo:
+class BooksInfoLoader:
     """Load book info."""
 
     _query: SqlQueryLoader
@@ -21,6 +21,7 @@ class LoadBooksInfo:
             cursor = connection.execute(self._query(SqlQuery.LOAD_BOOKS_INFO))
             return [
                 ShortBookInfo(
+                    id=row['id'],
                     title=row['title'],
                     author=row['name'],
                 )
