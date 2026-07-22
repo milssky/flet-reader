@@ -10,7 +10,7 @@ authors = [
 dependencies = [
     "attrs>=26.1,<27.0",
     "diwire>=1.4.1,<2.0",
-    "flet>=0.85.3,<1.0",
+    "flet>=0.86.0,<1.0",
     "lxml>=6.1.1,<7.0",
     "msgspec>=0.21.1",
 ]
