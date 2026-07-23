@@ -33,7 +33,7 @@ dev = [
     "ruff>=0.15.16,<1.0",
     "wemake-python-styleguide>=1.6.2,<2.0",
     "sqlfluff>=4.2.2,<5.0",
-    "codespell>=2.4.2,<3.0",
+    "codespell>=2.4.3,<3.0",
     "types-lxml>=2026.2.16",
 ]
 
